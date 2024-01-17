@@ -1,7 +1,7 @@
 import unittest
 
+from modules.alphanumeric import Alphanumeric
 from modules.item import Item
-from modules.name import Name
 from modules.price import Price
 from modules.quantity import Quantity
 from modules.shopping_cart import ShoppingCart
@@ -15,7 +15,7 @@ class TestShoppingCart(unittest.TestCase):
                          "Invalid type, items must be a list of instances of Item")
 
         valid_item = Item(
-            name=Name(name="test"),
+            name=Alphanumeric(value="test"),
             price=Price(value=2.3),
             quantity=Quantity(value=12)
         )

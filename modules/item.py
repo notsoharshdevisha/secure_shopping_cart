@@ -1,13 +1,13 @@
-from modules.name import Name
+from modules.alphanumeric import Alphanumeric
 from modules.price import Price
 from modules.quantity import Quantity
 
 
 class Item:
-    def __init__(self, name: Name, price: Price, quantity: Quantity) -> None:
-        if not isinstance(name, Name):
+    def __init__(self, name: Alphanumeric, price: Price, quantity: Quantity) -> None:
+        if not isinstance(name, Alphanumeric):
             raise TypeError(
-                "Invalid type, name of an Item must be an instance of Name")
+                "Invalid type, name of an Item must be an instance of Alphanumeric")
 
         if not isinstance(price, Price):
             raise TypeError(
