@@ -10,7 +10,7 @@ from modules.shopping_cart import ShoppingCart
 class TestShoppingCart(unittest.TestCase):
     def test_shopping_cart_initialization(self):
         with self.assertRaises(TypeError) as context:
-            ShoppingCart(id="test", customer_id="test", items='cart')
+            ShoppingCart(items='cart')
         self.assertEqual(str(context.exception),
                          "Invalid type, items must be a list of instances of Item")
 
@@ -22,9 +22,7 @@ class TestShoppingCart(unittest.TestCase):
         invalid_item = "lol"
         invalid_item_list = [valid_item, invalid_item]
         with self.assertRaises(TypeError) as context:
-            ShoppingCart(id="test",
-                         customer_id="test",
-                         items=invalid_item_list)
+            ShoppingCart(items=invalid_item_list)
         self.assertEqual(str(context.exception),
                          "Invalid type, items must be a list of instances of Item")
 

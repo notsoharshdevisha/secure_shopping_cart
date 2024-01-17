@@ -1,22 +1,19 @@
+import uuid
 from typing import List, Type
 
 from modules.item import Item
+from utils.utility import generate_customer_id
 
 
 class ShoppingCart:
-    def __init__(self, id: str, customer_id: str, items: List[Item]):
-        if not isinstance(id, str) or not id:
-            raise ValueError("Invalid id, must be a non-empty string")
-
-        if not isinstance(customer_id, str) or not customer_id:
-            raise ValueError("Invalid customer id, must be a non-empty string")
+    def __init__(self, items: List[Item]):
 
         if not self.are_instances(items, Item):
             raise TypeError(
                 "Invalid type, items must be a list of instances of Item")
 
-        self.id = id
-        self.customer_id = customer_id
+        self.id = uuid.uuid4()
+        self.customer_id = generate_customer_id()
         self.cart = items
 
     def are_instances(self, item_list: List, expected_type: Type[Item]) -> bool:
