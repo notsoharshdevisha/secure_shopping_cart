@@ -22,6 +22,18 @@ class Item:
                 "Invalid type, quantity of an Item must be an instance of Quantity"
             )
 
-        self.name = name
-        self.price = price
-        self.quantity = quantity
+        self._name = name
+        self._price = price
+        self._quantity = quantity
+
+    @property
+    def name(self) -> str:
+        return self._name.value
+
+    @property
+    def price(self) -> float:
+        return self._price.value
+
+    @property
+    def quantity(self) -> int:
+        return self._quantity.value

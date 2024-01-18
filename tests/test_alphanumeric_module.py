@@ -4,7 +4,7 @@ from modules.alphanumeric import Alphanumeric
 
 
 class TestAlphanumericModule(unittest.TestCase):
-    def test_alphanumeric_initialization(self):
+    def test_alphanumeric_initialization(self) -> None:
         with self.assertRaises(TypeError) as context:
             Alphanumeric(value=1)
         self.assertEqual(str(context.exception),
@@ -20,7 +20,7 @@ class TestAlphanumericModule(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "value must be alphanumeric")
 
-    def test_value_immutability(self):
+    def test_alphanumeric_immutability(self) -> None:
         string = Alphanumeric(value="123abc")
         with self.assertRaises(AttributeError) as context:
             string.value = "newval"

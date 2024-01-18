@@ -19,6 +19,13 @@ class TestQuantityModule(unittest.TestCase):
             "Quantity must be greater than 0",
         )
 
+    def test_quantity_immutability(self) -> None:
+        quantity = Quantity(value=10)
+        with self.assertRaises(AttributeError) as context:
+            quantity.value = 11
+        self.assertEqual(str(context.exception),
+                         "property 'value' of 'Quantity' object has no setter")
+
 
 if __name__ == "__main__":
     unittest.main()

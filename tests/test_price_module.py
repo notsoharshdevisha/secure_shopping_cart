@@ -19,6 +19,13 @@ class TestPriceModule(unittest.TestCase):
             "Price must be greater than 0.0"
         )
 
+    def test_price_immutability(self) -> None:
+        price = Price(value=10)
+        with self.assertRaises(AttributeError) as context:
+            price.value = 11
+        self.assertEqual(str(context.exception),
+                         "property 'value' of 'Price' object has no setter")
+
 
 if __name__ == "__main__":
     unittest.main()

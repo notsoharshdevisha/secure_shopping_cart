@@ -8,4 +8,8 @@ class Price:
         if value < 0.0:
             raise ValueError("Price must be greater than 0.0")
 
-        self.value = value
+        self._value = float(value)
+
+    @property
+    def value(self) -> float:
+        return self._value
