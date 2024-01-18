@@ -1,21 +1,17 @@
+from fake_db.db import catalogue
 from modules.alphanumeric import Alphanumeric
 from modules.price import Price
 from modules.quantity import Quantity
 
 
 class Item:
-    def __init__(self, name: Alphanumeric, price: Price, quantity: Quantity) -> None:
+    def __init__(self, name: Alphanumeric,  quantity: Quantity) -> None:
         if not isinstance(name, Alphanumeric):
             raise TypeError(
                 "Invalid type, name of an Item must be an instance of Alphanumeric")
 
-        if len(name.value) > 80:
-            raise ValueError(
-                "The name of an item must not be more than 80 characters long")
-
-        if not isinstance(price, Price):
-            raise TypeError(
-                "Invalid type, price of an Item must be an instance of Price")
+        if not self.is_item_present_in_catalogue(name.value):
+            raise ValueError("Item not present in catalogue")
 
         if not isinstance(quantity, Quantity):
             raise TypeError(
@@ -23,7 +19,8 @@ class Item:
             )
 
         self._name = name
-        self._price = price
+        # TODO get price from catalogue
+        self._price = Price(value=0)
         self._quantity = quantity
 
     @property
@@ -37,3 +34,6 @@ class Item:
     @property
     def quantity(self) -> int:
         return self._quantity.value
+
+    def is_item_present_in_catalogue(self, item_name: str) -> bool:
+        return item_name in [item["name"] for item in catalogue]
