@@ -9,7 +9,7 @@ from modules.quantity import Quantity
 class TestItemModule(unittest.TestCase):
     def test_item_initialization(self) -> None:
         with self.assertRaises(TypeError) as context:
-            Item(name="", price=Price(10.00), quantity=Quantity(10))
+            Item(name="", price=Price(10), quantity=Quantity(10))
         self.assertEqual(str(context.exception),
                          "Invalid type, name of an Item must be an instance of Alphanumeric")
 

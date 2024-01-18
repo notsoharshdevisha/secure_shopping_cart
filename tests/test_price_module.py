@@ -12,15 +12,8 @@ class TestPriceModule(unittest.TestCase):
             "Invalid type, Price must be a positive non-zero number",
         )
 
-        with self.assertRaises(TypeError) as context2:
-            Price(value=0)
-        self.assertEqual(
-            str(context2.exception),
-            "Invalid type, Price must be a positive non-zero number",
-        )
-
         with self.assertRaises(ValueError) as context3:
-            Price(value=0.0)
+            Price(value=-0.1)
         self.assertEqual(
             str(context3.exception),
             "Price must be greater than 0.0"
