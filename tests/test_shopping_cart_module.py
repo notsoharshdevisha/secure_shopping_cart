@@ -26,9 +26,14 @@ class TestShoppingCart(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "Invalid type, items must be a list of instances of Item")
 
+        with self.assertRaises(ValueError) as context:
+            ShoppingCart(items=[valid_item])
+        self.assertEqual(str(context.exception),
+                         "item/s not present in the catalogue")
+
     def test_shopping_cart_immutability(self) -> None:
         item_list = [Item(
-            name=Alphanumeric(value="test"),
+            name=Alphanumeric(value="Item 1"),
             price=Price(value=2.3),
             quantity=Quantity(value=12)
         )]
