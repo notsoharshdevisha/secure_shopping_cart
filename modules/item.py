@@ -9,6 +9,10 @@ class Item:
             raise TypeError(
                 "Invalid type, name of an Item must be an instance of Alphanumeric")
 
+        if len(name.value) > 80:
+            raise ValueError(
+                "The name of an item must not be more than 80 characters long")
+
         if not isinstance(price, Price):
             raise TypeError(
                 "Invalid type, price of an Item must be an instance of Price")

@@ -16,11 +16,13 @@ class TestAlphanumericModule(unittest.TestCase):
                          "value must be a non-empty string")
 
         with self.assertRaises(ValueError) as context:
-            Alphanumeric(value="a"*81)
-        self.assertEqual(str(context.exception),
-                         "value must be within 80 characters")
-
-        with self.assertRaises(ValueError) as context:
             Alphanumeric(value="A Test 69 *")
         self.assertEqual(str(context.exception),
                          "value must be alphanumeric")
+
+    def test_value_immutability(self):
+        string = Alphanumeric(value="123abc")
+        with self.assertRaises(AttributeError) as context:
+            string.value = "newval"
+        self.assertEqual(str(context.exception),
+                         "property 'value' of 'Alphanumeric' object has no setter")

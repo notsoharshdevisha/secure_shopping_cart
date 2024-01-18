@@ -9,10 +9,11 @@ class Alphanumeric:
         if not value:
             raise ValueError("value must be a non-empty string")
 
-        if len(value) > 80:
-            raise ValueError("value must be within 80 characters")
-
         if not re.match(r"^[a-zA-Z0-9 ]+$", value):
             raise ValueError("value must be alphanumeric")
 
-        self.name = value.strip()
+        self._value = value.strip()
+
+    @property
+    def value(self) -> str:
+        return self._value

@@ -24,6 +24,11 @@ class TestItemModule(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "Invalid type, quantity of an Item must be an instance of Quantity")
 
+        with self.assertRaises(ValueError) as context:
+            Item(Alphanumeric(value="a"*81), price=Price(10.00), quantity=10)
+        self.assertEqual(str(context.exception),
+                         "The name of an item must not be more than 80 characters long")
+
 
 if __name__ == "__main__":
     unittest.main()
