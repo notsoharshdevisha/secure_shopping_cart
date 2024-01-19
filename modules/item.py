@@ -2,28 +2,45 @@ from typing import Dict
 
 from fake_db.db import catalogue
 from modules.alphanumeric import Alphanumeric
+from modules.initialization_error import InitializationError
 from modules.price import Price
 from modules.quantity import Quantity
 
 
 class Item:
-    def __init__(self, name: Alphanumeric,  quantity: Quantity) -> None:
-        if not isinstance(name, Alphanumeric):
-            raise TypeError(
-                "Invalid type, name of an Item must be an instance of Alphanumeric")
+    def __init__(self, name: str,  quantity: int) -> None:
 
-        if not isinstance(quantity, Quantity):
-            raise TypeError(
-                "Invalid type, quantity of an Item must be an instance of Quantity"
-            )
+        try:
+            self._name = Alphanumeric(value=name)
+        except TypeError:
+            raise InitializationError(
+                "Invalid Type, name of an item must be string")
+        except ValueError:
+            raise InitializationError(
+                "Invalid value, name of an item must be a non-empty alphanumeric string")
 
-        item = self.get_item_from_catalogue(name.value)
+        try:
+            self._quantity = Quantity(value=quantity)
+        except TypeError:
+            raise InitializationError(
+                "Invalid Type, quantity of an item must be an integer")
+        except ValueError:
+            raise InitializationError(
+                "Invalid value, quantity of an item must be a non-zero positive integer")
+
+        item = self.get_item_from_catalogue(name)
         if not item:
-            raise ValueError("Item not present in catalogue")
+            raise InitializationError("Item not found in catalogue")
 
-        self._name = name
-        self._price = Price(value=item["price"])
-        self._quantity = quantity
+        try:
+            self._price = Price(value=item["price"])
+        except TypeError:
+            raise InitializationError(
+                "Invalid type, price of an item must be a number")
+        except ValueError:
+            raise InitializationError(
+                "Invalid value, price of an item must be a positive number"
+            )
 
     @property
     def name(self) -> str:
