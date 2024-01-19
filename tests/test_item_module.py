@@ -18,6 +18,11 @@ class TestItemModule(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "Invalid type, quantity of an Item must be an instance of Quantity")
 
+        with self.assertRaises(ValueError) as context:
+            Item(Alphanumeric(value="Item 69"), quantity=10)
+        self.assertEqual(str(context.exception),
+                         "Item not present in catalogue")
+
     def test_item_immutability(self) -> None:
         item = Item(name=Alphanumeric(value="Item 1"),
                     quantity=Quantity(value=12))
