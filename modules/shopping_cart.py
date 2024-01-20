@@ -38,9 +38,17 @@ class ShoppingCart:
 
     def add_to_cart(self, item_name: str) -> None:
         index = self.is_item_present_in_cart(item_name)
-        if index:
-            # TODO update item quantity
-            pass
+        if isinstance(index, int):
+            concerned_item = self._items[index]
+            new_quantity = concerned_item.quantity + 1
+            concerned_item.update_quantity(new_quantity)
         else:
-            # TODO add to cart
-            pass
+            try:
+                new_item = Item(name=item_name, quantity=1)
+            except InitializationError:
+                raise UpdateError(
+                    "Could not add item to the cart because it was not found in the catalogue, The item must be from the catalogue")
+            self._items.append(new_item)
+
+    def remove_from_cart(self, item_name: str) -> None:
+        pass
