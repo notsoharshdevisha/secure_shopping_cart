@@ -41,6 +41,12 @@ class TestShoppingCart(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "Could not add item to the cart because it was not found in the catalogue, The item must be from the catalogue")
 
+        with self.assertRaises(UpdateError) as context:
+            for _ in range(69):
+                shopping_cart.add_to_cart(item_name)
+        self.assertEqual(str(context.exception),
+                         f"quantity of an item should not be more than max allowed quantity for that item. The max allowed quantity for Item 1 is 21")
+
     def test_remove_from_cart(self) -> None:
         shopping_cart = ShoppingCart()
         item_name = "Item 3"
@@ -59,7 +65,7 @@ class TestShoppingCart(unittest.TestCase):
             item["name"] for item in shopping_cart.items]
         self.assertEqual(is_still_present_in_cart, False)
 
-    def test_update_item_quantity(self) -> None:
+    def test_update_cart_item_quantity(self) -> None:
         shopping_cart = ShoppingCart()
 
         item_name = "Item 3"
@@ -67,10 +73,20 @@ class TestShoppingCart(unittest.TestCase):
         shopping_cart.update_item_quantity(item_name, 3)
         self.assertEqual(shopping_cart.items[0]["quantity"], 3)
 
+        with self.assertRaises(UpdateError) as context:
+            shopping_cart.update_item_quantity(item_name, 69)
+        self.assertEqual(str(context.exception),
+                         f"quantity of an item should not be more than max allowed quantity for that item. The max allowed quantity for Item 3 is 23")
+
         item_name = "Item 4"
         shopping_cart.add_to_cart(item_name)
         shopping_cart.update_item_quantity(item_name, 4)
         self.assertEqual(shopping_cart.items[1]["quantity"], 4)
+
+        with self.assertRaises(UpdateError) as context:
+            shopping_cart.update_item_quantity(item_name, 69)
+        self.assertEqual(str(context.exception),
+                         f"quantity of an item should not be more than max allowed quantity for that item. The max allowed quantity for Item 4 is 24")
 
         item_name = "Item 5"
         shopping_cart.add_to_cart(item_name)

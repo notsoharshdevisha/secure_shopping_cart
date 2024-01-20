@@ -16,8 +16,9 @@ class Item:
             raise InitializationError(
                 "Invalid value, name of an item must be a non-empty alphanumeric string")
 
+        valid_quantity = None
         try:
-            self._quantity = Quantity(value=quantity)
+            valid_quantity = Quantity(value=quantity)
         except (TypeError, ValueError):
             raise InitializationError(
                 "Invalid value, quantity of an item must be a positive non-zero integer")
@@ -25,6 +26,12 @@ class Item:
         item = self.get_item_from_catalogue(name)
         if not item:
             raise InitializationError("Item not found in catalogue")
+
+        if valid_quantity.value > item["max_allowed_quantity"]:
+            raise InitializationError(
+                f"quantity of an item should not be more than max allowed quantity for that item. The max allowed quantity for {item['name']} is {item['max_allowed_quantity']}")
+
+        self._quantity = valid_quantity
 
         try:
             self._price = Price(value=item["price"])
@@ -52,8 +59,19 @@ class Item:
             return None
 
     def update_quantity(self, new_quantity) -> None:
+        new_valid_quantity = None
         try:
-            self._quantity = Quantity(value=new_quantity)
+            new_valid_quantity = Quantity(value=new_quantity)
         except (TypeError, ValueError):
             raise UpdateError(
                 "Invalid value, quantity of an item must be a positive non-zero integer")
+
+        item = self.get_item_from_catalogue(self.name)
+        if item and (new_valid_quantity.value > item["max_allowed_quantity"]):
+            raise UpdateError(
+                f"quantity of an item should not be more than max allowed quantity for that item. The max allowed quantity for {item['name']} is {item['max_allowed_quantity']}")
+
+        self._quantity = new_valid_quantity
+
+    def is_more_than_max_allowed_quantity(self):
+        pass

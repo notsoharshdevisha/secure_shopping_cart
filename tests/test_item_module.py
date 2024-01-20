@@ -43,6 +43,11 @@ class TestItemModule(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "Item not found in catalogue")
 
+        with self.assertRaises(InitializationError) as context:
+            Item(name="Item 1", quantity=69)
+        self.assertEqual(str(context.exception),
+                         f"quantity of an item should not be more than max allowed quantity for that item. The max allowed quantity for Item 1 is 21")
+
     def test_price_of_newly_initailized_item(self):
         item_name = "Item 2"
         new_item = Item(name=item_name, quantity=10)
@@ -84,6 +89,11 @@ class TestItemModule(unittest.TestCase):
             item.update_quantity(-69)
         self.assertEqual(str(context.exception),
                          "Invalid value, quantity of an item must be a positive non-zero integer")
+
+        with self.assertRaises(UpdateError) as context:
+            item.update_quantity(69)
+        self.assertEqual(str(context.exception),
+                         "quantity of an item should not be more than max allowed quantity for that item. The max allowed quantity for Item 1 is 21")
 
 
 if __name__ == "__main__":
