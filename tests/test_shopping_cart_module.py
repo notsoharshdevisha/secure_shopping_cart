@@ -1,38 +1,15 @@
 import unittest
 
-from modules.alphanumeric import Alphanumeric
-from modules.item import Item
-from modules.quantity import Quantity
 from modules.shopping_cart import ShoppingCart
+from modules.update_error import UpdateError
 
 
 class TestShoppingCart(unittest.TestCase):
-    def test_shopping_cart_initialization(self) -> None:
-        with self.assertRaises(TypeError) as context:
-            ShoppingCart(items='cart')
-        self.assertEqual(str(context.exception),
-                         "Invalid type, items must be a list of instances of Item")
-
-        valid_item = Item(
-            name=Alphanumeric(value="Item 1"),
-            quantity=Quantity(value=12)
-        )
-        invalid_item = "lol"
-        invalid_item_list = [valid_item, invalid_item]
-        with self.assertRaises(TypeError) as context:
-            ShoppingCart(items=invalid_item_list)
-        self.assertEqual(str(context.exception),
-                         "Invalid type, items must be a list of instances of Item")
-
     def test_shopping_cart_immutability(self) -> None:
-        item_list = [Item(
-            name=Alphanumeric(value="Item 1"),
-            quantity=Quantity(value=12)
-        )]
-        shopping_cart = ShoppingCart(items=item_list)
+        shopping_cart = ShoppingCart()
 
         with self.assertRaises(AttributeError) as context:
-            shopping_cart.items = item_list
+            shopping_cart.items = []
         self.assertEqual(str(context.exception),
                          "property 'items' of 'ShoppingCart' object has no setter")
 

@@ -1,20 +1,17 @@
 import uuid
 from typing import List, Type
 
+from modules.initialization_error import InitializationError
 from modules.item import Item
+from modules.update_error import UpdateError
 from utils.utility import generate_customer_id
 
 
 class ShoppingCart:
-    def __init__(self, items: List[Item] = []) -> None:
-
-        if not self.are_instances(items, Item):
-            raise TypeError(
-                "Invalid type, items must be a list of instances of Item")
-
+    def __init__(self) -> None:
         self._id = uuid.uuid4()
         self._customer_id = generate_customer_id()
-        self._items = items
+        self._items = []
 
     @property
     def id(self) -> str:
@@ -31,9 +28,6 @@ class ShoppingCart:
                  "price": item.price,
                  "quantity": item.quantity}
                 for index, item in enumerate(self._items)]
-
-    def are_instances(self, item_list: List[Item], expected_type: Type[Item]) -> bool:
-        return all(isinstance(item, expected_type) for item in item_list)
 
     def is_item_present_in_cart(self, item_name) -> int | None:
         item_name_list = [item["name"] for item in self.items]
