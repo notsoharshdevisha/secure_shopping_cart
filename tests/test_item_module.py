@@ -69,6 +69,22 @@ class TestItemModule(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "property 'quantity' of 'Item' object has no setter")
 
+    def test_update_item_quantity(self) -> None:
+        item = Item(name="Item 1", quantity=1)
+        new_quantity = 2
+        item.update_quantity(new_quantity)
+        self.assertEqual(item.quantity, new_quantity)
+
+        with self.assertRaises(UpdateError) as context:
+            item.update_quantity("lol")
+        self.assertEqual(str(context.exception),
+                         "Invalid value, quantity of an item must be a positive non-zero integer")
+
+        with self.assertRaises(UpdateError) as context:
+            item.update_quantity(-69)
+        self.assertEqual(str(context.exception),
+                         "Invalid value, quantity of an item must be a positive non-zero integer")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -50,3 +50,10 @@ class Item:
             return catalogue[index]
         except:
             return None
+
+    def update_quantity(self, new_quantity) -> None:
+        try:
+            self._quantity = Quantity(value=new_quantity)
+        except (TypeError, ValueError):
+            raise UpdateError(
+                "Invalid value, quantity of an item must be a positive non-zero integer")
