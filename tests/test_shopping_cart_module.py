@@ -41,6 +41,24 @@ class TestShoppingCart(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "Could not add item to the cart because it was not found in the catalogue, The item must be from the catalogue")
 
+    def test_remove_from_cart(self):
+        shopping_cart = ShoppingCart()
+        item_name = "Item 3"
+        with self.assertRaises(UpdateError) as context:
+            shopping_cart.remove_from_cart(item_name)
+        self.assertEqual(str(context.exception), "Item not present in cart")
+
+        shopping_cart.add_to_cart(item_name)
+        shopping_cart.remove_from_cart(item_name)
+        self.assertEqual(len(shopping_cart.items), 0)
+
+        shopping_cart.add_to_cart(item_name)
+        shopping_cart.add_to_cart("Item 1")
+        shopping_cart.remove_from_cart(item_name)
+        is_still_present_in_cart = item_name in [
+            item["name"] for item in shopping_cart.items]
+        self.assertEqual(is_still_present_in_cart, False)
+
 
 if __name__ == "__main__":
     unittest.main()

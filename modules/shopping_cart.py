@@ -51,4 +51,8 @@ class ShoppingCart:
             self._items.append(new_item)
 
     def remove_from_cart(self, item_name: str) -> None:
-        pass
+        index = self.is_item_present_in_cart(item_name)
+        if isinstance(index, int):
+            del self._items[index]
+        else:
+            raise UpdateError("Item not present in cart")
