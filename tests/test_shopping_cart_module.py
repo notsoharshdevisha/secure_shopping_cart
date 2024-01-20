@@ -23,7 +23,7 @@ class TestShoppingCart(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "property 'customer_id' of 'ShoppingCart' object has no setter")
 
-    def test_add_to_cart(self):
+    def test_add_to_cart(self) -> None:
         shopping_cart = ShoppingCart()
         item_name = "Item 1"
         shopping_cart.add_to_cart(item_name)
@@ -41,7 +41,7 @@ class TestShoppingCart(unittest.TestCase):
         self.assertEqual(str(context.exception),
                          "Could not add item to the cart because it was not found in the catalogue, The item must be from the catalogue")
 
-    def test_remove_from_cart(self):
+    def test_remove_from_cart(self) -> None:
         shopping_cart = ShoppingCart()
         item_name = "Item 3"
         with self.assertRaises(UpdateError) as context:
@@ -59,7 +59,7 @@ class TestShoppingCart(unittest.TestCase):
             item["name"] for item in shopping_cart.items]
         self.assertEqual(is_still_present_in_cart, False)
 
-    def test_update_item_quantity(self):
+    def test_update_item_quantity(self) -> None:
         shopping_cart = ShoppingCart()
 
         item_name = "Item 3"
@@ -84,6 +84,19 @@ class TestShoppingCart(unittest.TestCase):
             shopping_cart.update_item_quantity(item_name, "lol")
         self.assertEqual(str(context.exception),
                          "Item not present in cart")
+
+    def test_get_cart_total(self) -> None:
+        shopping_cart = ShoppingCart()
+        shopping_cart.add_to_cart("Item 1")
+        shopping_cart.add_to_cart("Item 1")
+        shopping_cart.add_to_cart("Item 2")
+        shopping_cart.add_to_cart("Item 3")
+        total = shopping_cart.get_cart_total()
+        self.assertEqual(total, 11 * 2 + 12 + 13)
+
+        shopping_cart = ShoppingCart()
+        total = shopping_cart.get_cart_total()
+        self.assertEqual(total, 0)
 
 
 if __name__ == "__main__":

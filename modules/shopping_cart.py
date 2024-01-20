@@ -64,3 +64,6 @@ class ShoppingCart:
             concerned_item.update_quantity(new_quantity)
         else:
             raise UpdateError("Item not present in cart")
+
+    def get_cart_total(self) -> float:
+        return sum([item["price"] * item["quantity"] for item in self.items])
