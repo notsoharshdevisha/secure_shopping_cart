@@ -5,28 +5,22 @@ from modules.alphanumeric import Alphanumeric
 from modules.initialization_error import InitializationError
 from modules.price import Price
 from modules.quantity import Quantity
+from modules.update_error import UpdateError
 
 
 class Item:
     def __init__(self, name: str,  quantity: int) -> None:
-
         try:
             self._name = Alphanumeric(value=name)
-        except TypeError:
-            raise InitializationError(
-                "Invalid Type, name of an item must be string")
-        except ValueError:
+        except (TypeError, ValueError):
             raise InitializationError(
                 "Invalid value, name of an item must be a non-empty alphanumeric string")
 
         try:
             self._quantity = Quantity(value=quantity)
-        except TypeError:
+        except (TypeError, ValueError):
             raise InitializationError(
-                "Invalid Type, quantity of an item must be an integer")
-        except ValueError:
-            raise InitializationError(
-                "Invalid value, quantity of an item must be a non-zero positive integer")
+                "Invalid value, quantity of an item must be a positive non-zero integer")
 
         item = self.get_item_from_catalogue(name)
         if not item:
@@ -34,13 +28,9 @@ class Item:
 
         try:
             self._price = Price(value=item["price"])
-        except TypeError:
+        except (TypeError, ValueError):
             raise InitializationError(
-                "Invalid type, price of an item must be a number")
-        except ValueError:
-            raise InitializationError(
-                "Invalid value, price of an item must be a positive number"
-            )
+                "Invalid value, price of an item must be a positive number")
 
     @property
     def name(self) -> str:
