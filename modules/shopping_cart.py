@@ -56,3 +56,11 @@ class ShoppingCart:
             del self._items[index]
         else:
             raise UpdateError("Item not present in cart")
+
+    def update_item_quantity(self, item_name, new_quantity) -> None:
+        index = self.is_item_present_in_cart(item_name)
+        if isinstance(index, int):
+            concerned_item = self._items[index]
+            concerned_item.update_quantity(new_quantity)
+        else:
+            raise UpdateError("Item not present in cart")

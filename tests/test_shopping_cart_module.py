@@ -59,6 +59,32 @@ class TestShoppingCart(unittest.TestCase):
             item["name"] for item in shopping_cart.items]
         self.assertEqual(is_still_present_in_cart, False)
 
+    def test_update_item_quantity(self):
+        shopping_cart = ShoppingCart()
+
+        item_name = "Item 3"
+        shopping_cart.add_to_cart(item_name)
+        shopping_cart.update_item_quantity(item_name, 3)
+        self.assertEqual(shopping_cart.items[0]["quantity"], 3)
+
+        item_name = "Item 4"
+        shopping_cart.add_to_cart(item_name)
+        shopping_cart.update_item_quantity(item_name, 4)
+        self.assertEqual(shopping_cart.items[1]["quantity"], 4)
+
+        item_name = "Item 5"
+        shopping_cart.add_to_cart(item_name)
+        with self.assertRaises(UpdateError) as context:
+            shopping_cart.update_item_quantity(item_name, "lol")
+        self.assertEqual(str(context.exception),
+                         "Invalid value, quantity of an item must be a positive non-zero integer")
+
+        item_name = "Item 7"
+        with self.assertRaises(UpdateError) as context:
+            shopping_cart.update_item_quantity(item_name, "lol")
+        self.assertEqual(str(context.exception),
+                         "Item not present in cart")
+
 
 if __name__ == "__main__":
     unittest.main()
