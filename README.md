@@ -8,6 +8,9 @@
 ### Run tests:
 ```bash
 python3 -m unittest -v
+```
 OR
+
+```bash
 python3 -m pytest -v
 ```
