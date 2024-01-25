@@ -19,6 +19,13 @@ class TestPriceModule(unittest.TestCase):
             "Price must be greater than 0.0"
         )
 
+        with self.assertRaises(ValueError) as context3:
+            Price(value=0.0)
+        self.assertEqual(
+            str(context3.exception),
+            "Price must be greater than 0.0"
+        )
+
     def test_price_immutability(self) -> None:
         price = Price(value=10)
         with self.assertRaises(AttributeError) as context:
